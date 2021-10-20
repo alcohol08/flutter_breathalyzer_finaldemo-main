@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "844285115416",
+    "project_id": "breathalyzer-6ecb2",
+    "storage_bucket": "breathalyzer-6ecb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844285115416:android:fc0c04e86a8f5e97b4176d",
+        "android_client_info": {
+          "package_name": "com.mdd8.flutter_breathalyzer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844285115416-32so0ul4ajekfqsp652pba18i0c7b1kg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEwNHgbAet_MGDPZcnJvA7Nx97otjqJQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844285115416-32so0ul4ajekfqsp652pba18i0c7b1kg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
