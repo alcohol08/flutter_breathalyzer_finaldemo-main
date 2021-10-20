@@ -21,8 +21,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String password = '';
   String name = '';
   String dob='';
-  String height = '';
-  String weight = '';
   String dropdownValue = 'Enter your gender';
   var formatter = new DateFormat('dd-MM-yyyy');
   bool isloading = false;
@@ -189,52 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
-                      SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                                Icons.height,
-                                color: Colors.blueGrey),
-                            hintStyle: TextStyle(color: Colors.black45),
-                            errorStyle: TextStyle(color: Colors.redAccent),
-                            border: OutlineInputBorder(),
-                            labelText: 'Enter your height in cm '
-                        ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          height = value;
-                        },
-                        validator: (value) => (value!.isEmpty)
-                            ? ' Please enter your height'
-                            : null,
-                        textAlign: TextAlign.center,
-
-
-                      ),
-                      SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                                Icons.monitor_weight,
-                                color: Colors.blueGrey),
-                            hintStyle: TextStyle(color: Colors.black45),
-                            errorStyle: TextStyle(color: Colors.redAccent),
-                            border: OutlineInputBorder(),
-                            labelText: 'Enter your weight in kg'
-                        ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          weight = value;
-                        },
-                        validator: (value) => (value!.isEmpty)
-                            ? ' Please enter your weight'
-                            : null,
-                        textAlign: TextAlign.center,
-
-                      ),
-                      SizedBox(height: 80),
+                      SizedBox(height: 50),
                       LoginSignupButton(
                         title: 'Register',
                         ontapp: () async {
@@ -248,7 +201,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   .then((value) {
                                 String userId = value.user!.uid;
                                 if (userId !=null) {
-                                  userCollections.doc(userId).set({'Name': name, 'Date of Birth': dob, 'Gender': dropdownValue, 'Height': height,'Weight': weight});
+                                  userCollections.doc(userId).set({'Name': name, 'Date of Birth': dob, 'Gender': dropdownValue, 'Emergency Contact':'NIL'});
                                 }
                               });
 

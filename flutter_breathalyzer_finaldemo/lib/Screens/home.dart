@@ -164,6 +164,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: new Text("User Profile"),
                 leading: new Icon(Icons.account_circle_rounded),
                 onTap: (){
+                  var now = new DateTime.now();
+                  var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
+                  final String formattedDate = formatter.format(now);
+                  FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).collection('BAC').doc().
+                  set({'Date & Time of Record': formattedDate, 'BAC Level': bac, 'Condition':op});
+                  FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).collection('BAC').doc().
+                  set({'Date & Time of Record': formattedDate, 'Condition':op});
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },

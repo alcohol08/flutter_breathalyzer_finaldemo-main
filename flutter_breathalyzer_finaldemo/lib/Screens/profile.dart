@@ -39,10 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text('Gender: '+data['Gender'],style:TextStyle(height:5,fontSize:20) ),
                     ),
                     ListTile(
-                      title: Text('Height: '+data['Height'],style:TextStyle(height:5,fontSize:20) ),
-                    ),
-                    ListTile(
-                      title: Text('Weight: '+data['Weight'],style:TextStyle(height:5,fontSize:20) ),
+                      title: Text('Emergency Contact: '+data['Emergency Contact'],style:TextStyle(height:5,fontSize:20) ),
                     ),
                   ],
                 );
