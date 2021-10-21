@@ -10,6 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_breathalyzer/Screens/learn_list_screen.dart';
+import 'package:flutter_breathalyzer/Screens/location.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -182,6 +184,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: (){
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LearnListScreen()));
+                },
+              ),
+              ListTile(
+                title: new Text("Location"),
+                leading: new Icon(Icons.location_on_sharp),
+                onTap: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LocationScreen()));
                 },
               ),
               ListTile(
