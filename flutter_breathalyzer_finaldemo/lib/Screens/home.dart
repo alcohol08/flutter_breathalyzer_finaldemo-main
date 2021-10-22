@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   double bac;
   final FirebaseAuth auth = FirebaseAuth.instance;
   String name = '';
+  double tts;
+  String tts1='';
 
   void _getdata() async {
     FirebaseFirestore.instance
@@ -62,6 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
       print(device);
       if (device.name == "HC-05") {
         mydevice = device;
+        op= 'Connected. Awaiting reading...';
+        tts1= '';
       }
     });
 
@@ -76,16 +80,20 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Arduino Data : ${ascii.decode(data)}');
       setState(() {
         bac = double.parse(ascii.decode(data));
-        if (bac >= 0.80) {
-          op = "Drunk\nBAC:" + ascii.decode(data);
+        tts = bac * 3750;
+        int h  = tts~/60;
+        int m = (tts-60*h).round();
+        tts1= 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
+        if (bac >= 0.08) {
+          op = "Drunk\nBAC: 0" + ascii.decode(data);
           status = Colors.red;
         }
-        else if (bac > 0 && bac < 0.8) {
-          op = "Within limit\nBAC:" + ascii.decode(data);
+        else if (bac > 0 && bac < 0.08) {
+          op = "Within limit\nBAC: 0" + ascii.decode(data);
           status = Colors.amber;
         }
         else {
-          op = "Sober";
+          op = "Sober\nBAC: 0" + ascii.decode(data);
           status = Colors.green;
         }
       }
@@ -236,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.greenAccent,
                       disabledColor: Colors.grey,)
                     ,),
-                  SizedBox(width: 80,),
+                  SizedBox(width: 40,),
                   Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
                     child: FlatButton(
                       onPressed: isDisConnectButtonEnabled ? _disconnect : null,
@@ -255,11 +263,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   Card(color: Colors.white,
                     elevation: 100,
                     shadowColor: Colors.black,
-                    child: Text(op, style: TextStyle(fontSize: 18,
+                    child: Text(op , style: TextStyle(fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: status),),
+
                   ),
-                ],
+                  Card(color: Colors.white,
+                    elevation: 100,
+                    shadowColor: Colors.black,
+                    child: Text(tts1, style: TextStyle(fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        ),),
+                  )],
               ),
             )
           ],
