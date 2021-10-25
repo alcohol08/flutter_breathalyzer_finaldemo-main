@@ -15,7 +15,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final formkey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
-  final _ref = FirebaseFirestore.instance;
   final userCollections = FirebaseFirestore.instance.collection("users");
   String email = '';
   String password = '';
