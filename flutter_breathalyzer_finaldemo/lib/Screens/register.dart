@@ -72,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: const InputDecoration(
                             prefixIcon: Icon(
                                 Icons.mail,
-                                color: Colors.blueGrey),
+                                color: Color(0xFF398AE5)),
                             hintStyle: TextStyle(color: Colors.black45),
                             errorStyle: TextStyle(color: Colors.redAccent),
                             border: OutlineInputBorder(),
@@ -93,7 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: const InputDecoration(
                             prefixIcon: Icon(
                                 Icons.lock,
-                                color: Colors.blueGrey),
+                                color: Color(0xFF398AE5)),
                             hintStyle: TextStyle(color: Colors.black45),
                             errorStyle: TextStyle(color: Colors.redAccent),
                             border: OutlineInputBorder(),
@@ -112,7 +112,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: const InputDecoration(
                             prefixIcon: Icon(
                                 Icons.account_circle,
-                                color: Colors.blueGrey),
+                                color: Color(0xFF398AE5)),
                             hintStyle: TextStyle(color: Colors.black45),
                             errorStyle: TextStyle(color: Colors.redAccent),
                             border: OutlineInputBorder(),
@@ -136,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           labelText: 'Enter your birth date',
                           prefixIcon: Icon(
                               Icons.event_note,
-                              color: Colors.blueGrey),
+                              color: Color(0xFF398AE5)),
 
                         ),
                         mode: DateTimeFieldPickerMode.date,
@@ -155,7 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           border: OutlineInputBorder(),
                           prefixIcon: Icon(
                               Icons.wc,
-                              color: Colors.blueGrey),
+                              color: Color(0xFF398AE5)),
                         ),
 
                         value: dropdownValue,
