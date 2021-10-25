@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 accountEmail: Text("${firebaseUser.email}"),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Text("xyz"),
+                  child: Text(name),
                 ),
               ),
               ListTile(
