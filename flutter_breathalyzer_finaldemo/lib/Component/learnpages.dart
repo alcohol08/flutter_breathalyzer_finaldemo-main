@@ -18,8 +18,8 @@ List<Learn> learnList= [
     title: 'Treating Alcohol Use Disorder',
     author: 'Harvard Medical School',
     description:
-      'As with many other chronic diseases, AUD treatment is not as straightforward as taking antibiotics for pneumonia. However, it may surprise you that there are several medications that can help patients deal with cravings and reduce drinking. Naltrexone, acamprosate, and disulfiram are among the current FDA-approved drugs to treat AUD.'+
-       'Other drugs that are used off-label to treat AUD include nalmefene, baclofen, gabapentin, and topiramate. Individual and group therapy may also help reduce binge drinking and increase abstinence.'+
+      'As with many other chronic diseases, AUD treatment is not as straightforward as taking antibiotics for pneumonia. However, it may surprise you that there are several medications that can help patients deal with cravings and reduce drinking. Naltrexone, acamprosate, and disulfiram are among the current FDA-approved drugs to treat AUD.'+ '\n\n' +
+       'Other drugs that are used off-label to treat AUD include nalmefene, baclofen, gabapentin, and topiramate. Individual and group therapy may also help reduce binge drinking and increase abstinence.'+ '\n\n' +
        'Nonetheless, it may be hard to keep the motivation going. Relapses are a common part of the disease, and successfully overcoming AUD often depends on stability at work, adequate housing, hope for the future, and support from family, friends, and the health system. Don’t be afraid to seek professional help if alcohol use defines who you are and is affecting your life and relationships. We now have several approaches that may lead to healing and recovery. A simple conversation with your doctor about whether or not you have a problem with alcohol use could be the first step toward a healthier and more fulfilling life.',
       imageUrl: 'https://domf5oio6qrcr.cloudfront.net/medialibrary/9651/iStock-136256452.jpg'),
   Learn(
