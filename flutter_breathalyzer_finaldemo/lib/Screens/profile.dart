@@ -10,7 +10,31 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  String EC='';
 
+  void profiledata()async {
+    late DocumentSnapshot documentSnapshot;
+
+    await FirebaseFirestore.instance.collection('users')
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      documentSnapshot = value;
+    });
+
+    String name = documentSnapshot['Name'];
+    String dob = documentSnapshot['Date of Birth'];
+    String gender = documentSnapshot['Gender'];
+    String ec = documentSnapshot['Emergency Contact'];
+  }
+
+  Future<void> updateUser() {
+    return FirebaseFirestore.instance.collection('users')
+        .doc(firebaseUser!.uid)
+        .update({'Emergency Contact': EC})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,38 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-            if(!snapshot.hasData){
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Name: '+data['Name'],style:TextStyle(height:5,fontSize:20) ),
-                    ),
-                    ListTile(
-                      title: Text('Date of Birth: '+data['Date of Birth'],style:TextStyle(height:5,fontSize:20) ),
-                    ),
-                    ListTile(
-                      title: Text('Gender: '+data['Gender'],style:TextStyle(height:5,fontSize:20) ),
-                    ),
-                    ListTile(
-                      title: Text('Emergency Contact: '+data['Emergency Contact'],style:TextStyle(height:5,fontSize:20) ),
-                    ),
-                  ],
-                );
-              }).toList(),
+
             );
           }
-      ),
-    );
   }
-}

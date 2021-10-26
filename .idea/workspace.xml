@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9bd56840-9b81-4693-8bf1-114a3aaea650" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/model/user.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/learnpages.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
