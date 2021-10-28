@@ -1,5 +1,5 @@
 import'package:flutter/material.dart';
-import 'package:flutter_breathalyzer/Component/learnpages.dart';
+import 'package:flutter_breathalyzer/Components/learnpages.dart';
 
 class LearnDetailsScreen extends StatelessWidget{
   final Learn learn;

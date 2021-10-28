@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_breathalyzer/Component/loginbutton.dart';
-import 'package:flutter_breathalyzer/Component/utilities.dart';
-import '../constant.dart';
+import 'package:flutter_breathalyzer/Components/loginbutton.dart';
+import 'package:flutter_breathalyzer/Components/utilities.dart';
 import 'home.dart';
 import 'register.dart';
 import 'forgotpassword.dart';

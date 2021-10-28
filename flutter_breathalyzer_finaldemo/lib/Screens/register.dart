@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_breathalyzer/Component/button.dart';
+import 'package:flutter_breathalyzer/Components/button.dart';
 import 'package:date_field/date_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -200,7 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   .then((value) {
                                 String userId = value.user!.uid;
                                 if (userId !=null) {
-                                  userCollections.doc(userId).set({'Name': name, 'Date of Birth': dob, 'Gender': dropdownValue, 'Emergency Contact':'NIL'});
+                                  userCollections.doc(userId).set({'Name': name, 'Date of Birth': dob, 'Gender': dropdownValue, 'Emergency Contact':'NIL', 'Image Path':''});
                                 }
                               });
 

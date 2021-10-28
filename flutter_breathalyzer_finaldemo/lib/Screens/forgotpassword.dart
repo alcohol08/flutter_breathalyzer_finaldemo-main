@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constant.dart';
-import 'package:flutter_breathalyzer/Component/button.dart';
+import '../Components/constant.dart';
+import 'package:flutter_breathalyzer/Components/button.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

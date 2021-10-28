@@ -5,9 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9bd56840-9b81-4693-8bf1-114a3aaea650" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/learnpages.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/learnpages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/learnpages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/loginbutton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/loginbutton.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component/utilities.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/utilities.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/forgotpassword.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/forgotpassword.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_details_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_details_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_list_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_list_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/login.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/register.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/register.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/constant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/constant.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +37,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1zoCjN5na8a9QFJX05CmogNTxvm" />
   <component name="ProjectViewState">
@@ -43,9 +65,10 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component" />
+      <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components" />
       <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib" />
       <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens" />
+      <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Component" />
       <recent name="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/widget" />
     </key>
   </component>
@@ -71,5 +94,15 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
