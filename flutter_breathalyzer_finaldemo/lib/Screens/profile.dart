@@ -119,17 +119,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   'Date of Birth',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontFamily:'Open Sans', color: Colors.grey),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Text(
                   dob,
-                  style: TextStyle(fontSize: 16, height: 1.4),
+                  style: TextStyle(fontSize: 16,
+                      height: 1.4,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans'),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 48),
+          const Divider(
+            height: 20,
+            thickness: 1.5,
+            indent: 48,
+            endIndent: 48
+          ),
+
+          const SizedBox(height: 25),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 48),
             child: Column(
@@ -137,17 +147,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   'Gender',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontFamily:'Open Sans', color: Colors.grey),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Text(
                   gender,
-                  style: TextStyle(fontSize: 16, height: 1.4),
+                  style: TextStyle(fontSize: 16,
+                      height: 1.4,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans'),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 48),
+          const Divider(
+              height: 20,
+              thickness: 1.5,
+              indent: 48,
+              endIndent: 48
+          ),
+          const SizedBox(height: 25),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 48),
             child: Row(
@@ -156,11 +175,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   'Emergency Contact',
                   style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold, height: 1.5),
+                      fontSize: 14, fontFamily:'Open Sans', color: Colors.grey, height: 1.5),
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  iconSize: 20,
+                  iconSize: 12,
+                  splashRadius: 1,
+                  alignment: Alignment.topLeft,
                   onPressed: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(
@@ -170,6 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+
           Container(
             padding: EdgeInsets.symmetric(horizontal: 48),
             child: Column(
@@ -177,10 +199,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   ec,
-                  style: TextStyle(fontSize: 16, height: 1.4),
+                  style: TextStyle(fontSize: 16,
+                      height: 1.4,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans'),
                 ),
               ],
             ),
+          ),
+          const Divider(
+              height: 20,
+              thickness: 1.5,
+              indent: 48,
+              endIndent: 48
           ),
         ],
       ),
