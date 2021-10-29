@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .listen((userData) {
       setState(() {
         name = userData.data()['Name'];
-        ec = userData.data()['Emergency Data'];
+        ec = userData.data()['Emergency Contact'];
         fp = userData.data()['Image Path'];
       }
       );
