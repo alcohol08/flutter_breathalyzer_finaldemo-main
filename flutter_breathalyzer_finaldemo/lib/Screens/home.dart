@@ -13,6 +13,8 @@ import 'package:flutter_breathalyzer/Screens/learn_list_screen.dart';
 import 'package:flutter_breathalyzer/Screens/location.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -36,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double tts;
   String tts1 = '';
   TwilioFlutter twilioFlutter;
+  String Address = '';
 
 
   void _getdata() async {
@@ -55,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+
   void initState() {
     twilioFlutter = TwilioFlutter(
         accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
@@ -90,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     connection.input.listen((Uint8List data) {
       print('Arduino Data : ${ascii.decode(data)}');
-      setState(() {
+      setState(() async {
         bac = double.parse(ascii.decode(data));
         tts = bac * 3750;
         int h = tts ~/ 60;
@@ -100,6 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
         if (bac >= 0.08) {
           op = "Drunk\nBAC: 0" + ascii.decode(data);
           status = Colors.red;
+          Position position = await _getGeoLocationPosition();
+          GetAddressFromLatLong(position);
+          sendSms();
         }
         else if (bac > 0 && bac < 0.08) {
           op = "Within limit\nBAC: 0" + ascii.decode(data);
@@ -146,17 +153,64 @@ class _HomeScreenState extends State<HomeScreen> {
     connection.dispose();
   }
 
+  Future<Position> _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<void> GetAddressFromLatLong(Position position)async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+    Placemark place = placemarks[0];
+    Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    setState(()  {
+    });
+  }
+
   void sendSms() async {
     twilioFlutter.sendSMS(
         toNumber: ec,
-        messageBody: 'Hi, your friend is drunk. Please come and get him at xxxx.');
+        messageBody: 'Hi, your friend is drunk. Please come and get him at '+ Address + '.');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           showDialog(
             context: context,
             builder: (BuildContext context) {
