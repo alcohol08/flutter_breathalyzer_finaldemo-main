@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mydevice = device;
         op = 'Connected. Awaiting reading...';
         tts1 = '';
+
       }
     });
 

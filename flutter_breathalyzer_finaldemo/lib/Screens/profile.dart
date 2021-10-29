@@ -133,10 +133,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Divider(
-            height: 20,
-            thickness: 1.5,
-            indent: 48,
-            endIndent: 48
+              height: 20,
+              thickness: 1.5,
+              indent: 48,
+              endIndent: 48
           ),
 
           const SizedBox(height: 25),
