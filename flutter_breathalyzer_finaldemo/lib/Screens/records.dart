@@ -18,7 +18,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
       appBar: AppBar(
         title: Text('History'),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF398AE5),
       ),
       floatingActionButton: null,
       body: StreamBuilder<QuerySnapshot>(
@@ -40,9 +40,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     child: SingleChildScrollView(
                         child: ListTile(
                           leading: const Icon(
-                              Icons.liquor,
-                              size: 40.0,
-                              color: Colors.blue
+                            Icons.liquor,
+                            size: 40.0,
+                            color: Color(0xFF398AE5),
                           ),
                           title: Text('BAC Level: '+data['Condition'],
                               style:TextStyle(

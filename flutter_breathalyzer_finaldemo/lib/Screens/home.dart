@@ -78,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
         mydevice = device;
         op = 'Connected. Awaiting reading...';
         tts1 = '';
-
       }
     });
 
@@ -164,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return AlertDialog(
                 title: new Text("How to get started"),
                 content: new Text(
-                    '1. Switch on the DrinkÉ device. 2. Connect to it. 3. Press the warm up button. 4. Start blowing for 10 sec!'
+                    '1. Switch on the DrinkÉ device.' +'\n\n' + '2. Connect to it.' + '\n\n' + '3. Press the warm up button.' + '\n\n'+ '4. Start blowing for 10 sec!'
                     , maxLines: 200),
                 actions: <Widget>[
                   new FlatButton(

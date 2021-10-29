@@ -9,34 +9,35 @@ class LearnDetailsScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(learn.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children:[
-              Image.network(
-                learn.imageUrl,
-                height: 300,
-                width: 500,
+        appBar: AppBar(
+          backgroundColor:Color(0xFF398AE5),
+          title: Text(learn.title),
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:[
+                    Image.network(
+                      learn.imageUrl,
+                      height: 300,
+                      width: 500,
+                    ),
+                    Text(
+                      learn.author,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(height:1.2, fontSize:18.0, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      learn.description,
+                      textAlign: TextAlign.justify,
+                      style: const TextStyle(height:1.2, fontSize: 16.0, fontWeight: FontWeight.w600),
+                    )
+                  ]
               ),
-              Text(
-                learn.author,
-                textAlign: TextAlign.center,
-                style: const TextStyle(height:1.2, fontSize:18.0, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                learn.description,
-                textAlign: TextAlign.justify,
-                style: const TextStyle(height:1.2, fontSize: 16.0, fontWeight: FontWeight.w600),
-              )
-            ]
-          ),
+            )
         )
-      )
     );
   }
-  }
+}

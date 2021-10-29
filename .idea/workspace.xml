@@ -6,9 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="9bd56840-9b81-4693-8bf1-114a3aaea650" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/learnpages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/learnpages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Components/utilities.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/login.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_details_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_details_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_list_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/learn_list_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/records.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/records.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,15 +84,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
-          <url>file://$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
