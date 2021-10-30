@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_breathalyzer/Screens/login.dart';
 import 'package:flutter_breathalyzer/Screens/profile.dart';
 import 'package:flutter_breathalyzer/Screens/records.dart';
+import 'package:flutter_breathalyzer/Screens/donateus.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -288,7 +289,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: new Text("Donate Us"),
               leading: new Icon(Icons.volunteer_activism_rounded),
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => DonateUs()));
               },
             ),
             Divider(
