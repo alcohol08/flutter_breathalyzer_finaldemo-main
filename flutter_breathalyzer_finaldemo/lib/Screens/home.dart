@@ -6,7 +6,6 @@ import 'package:flutter_breathalyzer/Screens/profile.dart';
 import 'package:flutter_breathalyzer/Screens/records.dart';
 import 'package:flutter_breathalyzer/Screens/donateus.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -35,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final firebaseUser = FirebaseAuth.instance.currentUser;
   BluetoothConnection connection;
   BluetoothDevice mydevice;
-  String op = "Press ConnectBT Button";
-  Color status;
+  String op = '';
   bool isConnectButtonEnabled = true;
   bool isDisConnectButtonEnabled = false;
   double bac;
@@ -45,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String ec = '';
   String fp = '';
   double tts;
-  String countdown = '';
   String centreText = 'Welcome Back';
   String tts1 = 'How long does it take to reach sobriety?';
   TwilioFlutter twilioFlutter;
@@ -56,14 +53,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String blowcentreText = '';
   String connectionstatus = '';
 
-  int _duration = 20;
   AnimationController _animationController;
   Animation tween;
   Color myColor = Colors.blue;
   String drinkingstatus = 'What is my drinking status?';
-  bool isVisible = true;
-  bool isVisible2 = false;
-
 
   List<_Message> messages = List<_Message>.empty(growable: true);
 
@@ -76,9 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Iterable<Match> matches;
   Iterable<Match> matches2;
 
-
-
-
+  //Firebase Cloud
   void _getdata() async {
     FirebaseFirestore.instance
         .collection('users')
@@ -89,77 +80,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         name = userData.data()['Name'];
         ec = userData.data()['Emergency Contact'];
         fp = userData.data()['Image Path'];
-      }
-      );
-    }
-    );
+      });
+    });
   }
 
-  @override
-
-  void initState() {
+  //Twilio API
+  void _setupSMS(){
     twilioFlutter = TwilioFlutter(
         accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
         authToken: '4fc8ee4e7316a3d0d7564ee668ff5f2a',
         twilioNumber: '+13349663018');
-    super.initState();
-    _getdata();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: _duration),
-    );
-
-    _animationController.addListener((){
-      setState((){});
-    });
+  }
+  void sendSms() async {
+    twilioFlutter.sendSMS(
+        toNumber: ec,
+        messageBody: 'Hi, your friend is drunk. Please come and get him at '+ Address + '.');
   }
 
-  void _connect() async {
-    List<BluetoothDevice> devices = [];
-    setState(() {
-      isConnectButtonEnabled = false;
-      isDisConnectButtonEnabled = true;
-    });
-    devices = await _bluetooth.getBondedDevices();
-    // ignore: unnecessary_statements
-    devices.forEach((device) {
-      print(device);
-      if (device.name == "HC-05") {
-        mydevice = device;
-        connectionstatus = 'Connected';
-        isVisible = false;
-        isVisible2 = true;
-      }
-    });
-
-    await BluetoothConnection.toAddress(mydevice?.address)
-        .then((_connection) {
-      print('Connected to the device' + mydevice.toString());
-
-      connection = _connection;
-    });
-    connection.input.listen(_onDataReceived).onDone((){});
-
-    connection.input.listen(null).onDone(() {
-      print('Disconnected remotely!');
-    }
-    );
-  }
-
-  void _disconnect() {
-    setState(() {
-      op = "Disconnected";
-      isConnectButtonEnabled = true;
-      isDisConnectButtonEnabled = false;
-    }
-    );
-    connection.close();
-    connection.dispose();
-    connectionstatus = 'Disconnected';
-    isVisible = true;
-    isVisible2 = false;
-  }
-
+  //Location
   Future<Position> _getGeoLocationPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -186,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         return Future.error('Location permissions are denied');
       }
     }
-
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
       return Future.error(
@@ -197,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
-
   Future<void> GetAddressFromLatLong(Position position)async {
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     print(placemarks);
@@ -207,10 +143,55 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
-  void sendSms() async {
-    twilioFlutter.sendSMS(
-        toNumber: ec,
-        messageBody: 'Hi, your friend is drunk. Please come and get him at '+ Address + '.');
+  @override
+  void initState() {
+    super.initState();
+    _setupSMS();
+    _getdata();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    _animationController.addListener((){setState((){});});
+  }
+
+  void _connect() async {
+    List<BluetoothDevice> devices = [];
+    setState(() {
+      isConnectButtonEnabled = false;
+      isDisConnectButtonEnabled = true;
+    });
+    devices = await _bluetooth.getBondedDevices();
+    // ignore: unnecessary_statements
+    devices.forEach((device) {
+      print(device);
+      if (device.name == "HC-05") {
+        mydevice = device;
+        connectionstatus = 'Connected';
+      }
+    });
+
+    await BluetoothConnection.toAddress(mydevice?.address)
+        .then((_connection) {
+      print('Connected to the device' + mydevice.toString());
+      connection = _connection;
+    });
+    connection.input.listen(_onDataReceived).onDone((){});
+
+    connection.input.listen(null).onDone(() {
+      print('Disconnected remotely!');
+    });
+  }
+
+  void _disconnect() {
+    setState(() {
+      op = "Disconnected";
+      isConnectButtonEnabled = true;
+      isDisConnectButtonEnabled = false;
+    });
+    connection.close();
+    connection.dispose();
+    connectionstatus = 'Disconnected';
   }
 
   void _onDataReceived(Uint8List data) {
@@ -264,20 +245,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void results() {
+    //Processing BAC
     bac = double.parse(op);
     tts = bac * 3750;
     int h = tts ~/ 60;
     int m = (tts - 60 * h).round();
     tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
-    final conversion = bac /
-        0.16; // so that the indicator shows proportionate level
-    setState(() {
+    final conversion = bac / 0.16; // so that the indicator shows proportionate level
+    setState(() async {
       centreText = bac.toString();
       if (bac >= 0.08) {
         drinkingstatus = "Drinking status: Drunk";
         _animationController.value = conversion;
         myColor = Colors.red;
-        // input pop up msg to send alrt notifcaiton to emrgy
+        Position position = await _getGeoLocationPosition();
+        GetAddressFromLatLong(position);
+        sendSms();
       }
       else if (bac > 0.01 && bac < 0.08) {
         drinkingstatus = "Drinking status: Within limit";
@@ -289,26 +272,40 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         _animationController.value = conversion;
         myColor = Colors.green;
       }
+      //Sync to Firebase
+      // var now = new DateTime.now();
+      // var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
+      // final String formattedDate = formatter.format(now);
+      // FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
+      //     .collection('BAC').doc()
+      //     .
+      // set({
+      //   'Date & Time of Record': formattedDate,
+      //   'BAC Level': bac,
+      //   'Condition': drinkingstatus
+      // });
+      // FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
+      //     .collection('BAC').doc()
+      //     .
+      // set({'Date & Time of Record': formattedDate, 'Condition': op});
     });
   }
 
 
   @override
   Widget build(BuildContext context) {
+    //Decode data from Bluetooth to op variable
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
-          Text(
-                  (text) {
+          Text((text) {
                 return text == '/shrug' ? '¯\\_(ツ)_/¯' : op = text;//
-
-              }(_message.text.trim()),
-              style: TextStyle(color: Colors.white)),
-
+              }(_message.text.trim()),),
         ],
       );
     }).toList();
 
+    //Checking signal from Arduino
     if (checksec.hasMatch(op) == true) { //detect s from '20 s' data
       matches = exp.allMatches(op);
       matchedText = matches.elementAt(0).group(0); //parse the '10' from '10s'
@@ -346,10 +343,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     }
 
-
-
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Help'),
         onPressed: () async {
           showDialog(
             context: context,
@@ -360,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     '1. Switch on the DrinkÉ device.' +'\n\n' + '2. Connect to it.' + '\n\n' + '3. Press the warm up button.' + '\n\n'+ '4. Start blowing for 10 sec!'
                     , maxLines: 200),
                 actions: <Widget>[
-                  new FlatButton(
+                  new ElevatedButton(
                     child: new Text("OK"),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -371,14 +367,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             },
           );
         },
-        label: const Text('Help'),
       ),
       appBar: AppBar(
         title: Text('Drinké Breathalyser'),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
-        actions: [
-        ],
       ),
       drawer: Drawer(
         elevation: 16.0,
@@ -483,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Visibility(
-                  visible: isVisible,
+                  visible: isConnectButtonEnabled,
                   child:
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -501,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
                 Visibility(
-                  visible: isVisible2,
+                  visible: isDisConnectButtonEnabled,
                   child:
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
