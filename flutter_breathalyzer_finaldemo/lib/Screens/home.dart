@@ -84,13 +84,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
-  //Twilio API
-  void _setupSMS(){
-    twilioFlutter = TwilioFlutter(
-        accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
-        authToken: '4fc8ee4e7316a3d0d7564ee668ff5f2a',
-        twilioNumber: '+13349663018');
-  }
   void sendSms() async {
     twilioFlutter.sendSMS(
         toNumber: ec,
@@ -145,8 +138,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    twilioFlutter = TwilioFlutter(
+        accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
+        authToken: '4fc8ee4e7316a3d0d7564ee668ff5f2a',
+        twilioNumber: '+13349663018');
     super.initState();
-    _setupSMS();
     _getdata();
     _animationController = AnimationController(
       vsync: this,
