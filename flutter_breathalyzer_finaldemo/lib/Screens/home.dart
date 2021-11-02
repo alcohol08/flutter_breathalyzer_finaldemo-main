@@ -16,13 +16,21 @@ import 'package:twilio_flutter/twilio_flutter.dart';
 import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _Message {
+  int whom;
+  String text;
+
+  _Message(this.whom, this.text);
+}
+
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
   final firebaseUser = FirebaseAuth.instance.currentUser;
   BluetoothConnection connection;
@@ -35,11 +43,40 @@ class _HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String name = '';
   String ec = '';
-  String fp='';
+  String fp = '';
   double tts;
-  String tts1 = '';
+  String countdown = '';
+  String centreText = 'Welcome Back';
+  String tts1 = 'How long does it take to reach sobriety?';
   TwilioFlutter twilioFlutter;
   String Address = '';
+  String _messageBuffer = '';
+  String dataString = '';
+  String warmcentreText = '';
+  String blowcentreText = '';
+  String connectionstatus = '';
+
+  int _duration = 20;
+  AnimationController _animationController;
+  Animation tween;
+  Color myColor = Colors.blue;
+  String drinkingstatus = 'What is my drinking status?';
+  bool isVisible = true;
+  bool isVisible2 = false;
+
+
+  List<_Message> messages = List<_Message>.empty(growable: true);
+
+  RegExp exp = RegExp(r'(\w+)');
+  RegExp checksec = RegExp(r'^[0-9]+\ss$');
+  RegExp checksec2 = RegExp(r'^[0-9]+\sss$');
+  RegExp re_bac = RegExp(r'^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?$');
+  var matchedText;
+  var matchedText2;
+  Iterable<Match> matches;
+  Iterable<Match> matches2;
+
+
 
 
   void _getdata() async {
@@ -67,6 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
         twilioNumber: '+13349663018');
     super.initState();
     _getdata();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: _duration),
+    );
+
+    _animationController.addListener((){
+      setState((){});
+    });
   }
 
   void _connect() async {
@@ -81,8 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
       print(device);
       if (device.name == "HC-05") {
         mydevice = device;
-        op = 'Connected. Awaiting reading...';
-        tts1 = '';
+        connectionstatus = 'Connected';
+        isVisible = false;
+        isVisible2 = true;
       }
     });
 
@@ -92,50 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       connection = _connection;
     });
-
-    connection.input.listen((Uint8List data) {
-      print('Arduino Data : ${ascii.decode(data)}');
-      setState(() async {
-        bac = double.parse(ascii.decode(data));
-        tts = bac * 3750;
-        int h = tts ~/ 60;
-        int m = (tts - 60 * h).round();
-        tts1 =
-            'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
-        if (bac >= 0.08) {
-          op = "Drunk\nBAC: 0" + ascii.decode(data);
-          status = Colors.red;
-          Position position = await _getGeoLocationPosition();
-          GetAddressFromLatLong(position);
-          sendSms();
-        }
-        else if (bac > 0 && bac < 0.08) {
-          op = "Within limit\nBAC: 0" + ascii.decode(data);
-          status = Colors.amber;
-        }
-        else {
-          op = "Sober\nBAC: 0" + ascii.decode(data);
-          status = Colors.green;
-        }
-      }
-      );
-      var now = new DateTime.now();
-      var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
-      final String formattedDate = formatter.format(now);
-      FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
-          .collection('BAC').doc()
-          .
-      set({
-        'Date & Time of Record': formattedDate,
-        'BAC Level': bac,
-        'Condition': op
-      });
-      FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
-          .collection('BAC').doc()
-          .
-      set({'Date & Time of Record': formattedDate, 'Condition': op});
-    }
-    );
+    connection.input.listen(_onDataReceived).onDone((){});
 
     connection.input.listen(null).onDone(() {
       print('Disconnected remotely!');
@@ -152,6 +155,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     connection.close();
     connection.dispose();
+    connectionstatus = 'Disconnected';
+    isVisible = true;
+    isVisible2 = false;
   }
 
   Future<Position> _getGeoLocationPosition() async {
@@ -207,8 +213,141 @@ class _HomeScreenState extends State<HomeScreen> {
         messageBody: 'Hi, your friend is drunk. Please come and get him at '+ Address + '.');
   }
 
+  void _onDataReceived(Uint8List data) {
+    // Allocate buffer for parsed data
+    int backspacesCounter = 0;
+    data.forEach((byte) {
+      if (byte == 8 || byte == 127) {
+        backspacesCounter++;
+      }
+    });
+    Uint8List buffer = Uint8List(data.length - backspacesCounter);
+    int bufferIndex = buffer.length;
+
+    // Apply backspace control character
+    backspacesCounter = 0;
+    for (int i = data.length - 1; i >= 0; i--) {
+      if (data[i] == 8 || data[i] == 127) {
+        backspacesCounter++;
+      } else {
+        if (backspacesCounter > 0) {
+          backspacesCounter--;
+        } else {
+          buffer[--bufferIndex] = data[i];
+        }
+      }
+    }
+
+    // Create message if there is new line character
+    //String dataString = String.fromCharCodes(buffer);
+    dataString = String.fromCharCodes(buffer);
+    int index = buffer.indexOf(13);
+    if (~index != 0) {
+      setState(() {
+        messages.add(
+          _Message(
+            1,
+            backspacesCounter > 0
+                ? _messageBuffer.substring(
+                0, _messageBuffer.length - backspacesCounter)
+                : _messageBuffer + dataString.substring(0, index),
+          ),
+        );
+        _messageBuffer = dataString.substring(index);
+      });
+    } else {
+      _messageBuffer = (backspacesCounter > 0
+          ? _messageBuffer.substring(
+          0, _messageBuffer.length - backspacesCounter)
+          : _messageBuffer + dataString);
+    }
+  }
+
+  void results() {
+    bac = double.parse(op);
+    tts = bac * 3750;
+    int h = tts ~/ 60;
+    int m = (tts - 60 * h).round();
+    tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
+    final conversion = bac /
+        0.16; // so that the indicator shows proportionate level
+    setState(() {
+      centreText = bac.toString();
+      if (bac >= 0.08) {
+        drinkingstatus = "Drinking status: Drunk";
+        _animationController.value = conversion;
+        myColor = Colors.red;
+        // input pop up msg to send alrt notifcaiton to emrgy
+      }
+      else if (bac > 0.01 && bac < 0.08) {
+        drinkingstatus = "Drinking status: Within limit";
+        _animationController.value = conversion;
+        myColor = Colors.amber;
+      }
+      else {
+        drinkingstatus = "Drinking status: Sober";
+        _animationController.value = conversion;
+        myColor = Colors.green;
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    final List<Row> list = messages.map((_message) {
+      return Row(
+        children: <Widget>[
+          Text(
+                  (text) {
+                return text == '/shrug' ? '¯\\_(ツ)_/¯' : op = text;//
+
+              }(_message.text.trim()),
+              style: TextStyle(color: Colors.white)),
+
+        ],
+      );
+    }).toList();
+
+    if (checksec.hasMatch(op) == true) { //detect s from '20 s' data
+      matches = exp.allMatches(op);
+      matchedText = matches.elementAt(0).group(0); //parse the '10' from '10s'
+      print(matchedText); // print the integer only without s
+      var warmcountdown = int.parse(matchedText);
+      print(warmcountdown);
+      warmcentreText = ('Warming up '+ '$matchedText');
+      centreText = warmcentreText;
+      myColor = Colors.blue;
+      _animationController.animateTo(1);
+      _animationController.duration = Duration(seconds: 6);
+      if (warmcountdown == 0){
+        _animationController.value = 0;
+      }
+      if (warmcountdown == 20){
+        drinkingstatus = '';
+        tts1 = '';
+      }
+    }
+    else if (re_bac.hasMatch(op) == true) {
+      results();
+    }
+    else if (checksec2.hasMatch(op) == true){ //detect ss from '10 ss'
+      matches2 = exp.allMatches(op);
+      matchedText2 = matches2.elementAt(0).group(0); //parse the '10' from '10s'
+      print(matchedText2); // print the integer only without s
+      var blowountdown = int.parse(matchedText2);
+      blowcentreText = ('Blow for '+ '$matchedText2');
+      centreText = blowcentreText;
+      myColor = Colors.blue;
+      _animationController.animateTo(1);
+      _animationController.duration = Duration(seconds: 3);
+      if (blowountdown == 0){
+        _animationController.value = 0;
+      }
+    }
+
+
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
@@ -312,48 +451,94 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text('$connectionstatus', style: TextStyle(fontSize: 15,),),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Center(
+              child: SizedBox(
+                width: 300.0,
+                height: 300.0,
+                child: LiquidCircularProgressIndicator(
+                  value: _animationController.value,
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation(myColor),
+                  center: Text(
+                    centreText,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(padding: EdgeInsets.fromLTRB(60, 100, 0, 0),
-                  child: FlatButton(
-                    onPressed: isConnectButtonEnabled ? _connect : null,
-                    child: Text("Connect BT"),
-                    color: Colors.greenAccent,
-                    disabledColor: Colors.grey,)
-                  ,),
-                SizedBox(width: 40,),
-                Container(padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
-                  child: FlatButton(
-                    onPressed: isDisConnectButtonEnabled ? _disconnect : null,
-                    child: Text("Disconnect BT"),
-                    color: Colors.redAccent,
-                    disabledColor: Colors.grey,)
-                  ,),
+                Visibility(
+                  visible: isVisible,
+                  child:
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: ElevatedButton.icon(
+                          label: Text('Connect'),
+                          icon: Icon(Icons.bluetooth_rounded),
+                          onPressed: isConnectButtonEnabled ? _connect : null,
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.greenAccent,
+                            fixedSize: const Size (150,20),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                          )
+                      )
+                  ),
+                ),
+                Visibility(
+                  visible: isVisible2,
+                  child:
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: ElevatedButton.icon(
+                          label: Text('Disconnect'),
+                          icon: Icon(Icons.bluetooth_disabled_rounded),
+                          onPressed: isDisConnectButtonEnabled ? _disconnect : null,
+                            //1. pop up msg ask to reset on device
+                            //2. run void() to refresh this page
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent,
+                            fixedSize: const Size (150,20),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                          )
+                      )
+                  ),
+                ),
               ],
             ),
           ),
-          SizedBox(height: 200),
-          Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Card(color: Colors.white,
-                  elevation: 100,
-                  shadowColor: Colors.black,
-                  child: Text(op, style: TextStyle(fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: status),),
-                ),
-                Card(color: Colors.white,
-                  elevation: 100,
-                  shadowColor: Colors.black,
-                  child: Text(tts1, style: TextStyle(fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),),
-                )
-              ],
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('$drinkingstatus', style: TextStyle(fontSize: 20,
+                fontWeight: FontWeight.bold,),),
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('$tts1', style: TextStyle(fontSize: 20,
+                fontWeight: FontWeight.bold,),),
+            ),
+          ),
         ],
       ),
     );
