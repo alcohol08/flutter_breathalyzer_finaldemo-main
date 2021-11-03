@@ -224,16 +224,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height:20),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator. of(context). push(
-                                  MaterialPageRoute(
-                                    builder: (context) => ForgotPasswordScreen(),
-                                  ),
-                                );
-                              },
-                              child: Row(
+                              SizedBox(height:20),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator. of(context). push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ForgotPasswordScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Row(
                                   children:[
                                     Text(
                                       "Forgot password?",
