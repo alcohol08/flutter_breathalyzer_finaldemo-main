@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9bd56840-9b81-4693-8bf1-114a3aaea650" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/flutter_breathalyzer_finaldemo-main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flutter_breathalyzer_finaldemo-main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/android/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_breathalyzer_finaldemo/lib/Screens/home.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,10 +44,10 @@
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">

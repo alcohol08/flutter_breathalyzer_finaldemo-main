@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_breathalyzer/Screens/learn_list_screen.dart';
-import 'package:flutter_breathalyzer/Screens/location.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'dart:io';
 import 'package:geolocator/geolocator.dart';
@@ -70,6 +69,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Iterable<Match> matches;
   Iterable<Match> matches2;
 
+  @override
+  void initState() {
+    twilioFlutter = TwilioFlutter(
+        accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
+        authToken: '74585ae96f011bbfed4e87b4981b3e9e',
+        twilioNumber: '+13349663018');
+    super.initState();
+    _getdata();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    _animationController.addListener((){setState((){});});
+  }
+
   //Firebase Cloud
   void _getdata() async {
     FirebaseFirestore.instance
@@ -88,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void sendSms() async {
     twilioFlutter.sendSMS(
         toNumber: ec,
-        messageBody: 'Hi, your friend is drunk. Please come and get him at '+ Address + '.');
+        messageBody: 'Hi, your friend is drunk. Please come and get him at ' + Address + '.');
   }
 
   //Location
@@ -135,21 +149,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
     setState(()  {
     });
-  }
-
-  @override
-  void initState() {
-    twilioFlutter = TwilioFlutter(
-        accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
-        authToken: '4fc8ee4e7316a3d0d7564ee668ff5f2a',
-        twilioNumber: '+13349663018');
-    super.initState();
-    _getdata();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 10),
-    );
-    _animationController.addListener((){setState((){});});
   }
 
   void _connect() async {
@@ -286,21 +285,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         myColor = Colors.green;
       }
       //Sync to Firebase
-      // var now = new DateTime.now();
-      // var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
-      // final String formattedDate = formatter.format(now);
-      // FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
-      //     .collection('BAC').doc()
-      //     .
-      // set({
-      //   'Date & Time of Record': formattedDate,
-      //   'BAC Level': bac,
-      //   'Condition': drinkingstatus
-      // });
-      // FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
-      //     .collection('BAC').doc()
-      //     .
-      // set({'Date & Time of Record': formattedDate, 'Condition': op});
+      var now = new DateTime.now();
+      var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
+      final String formattedDate = formatter.format(now);
+      FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
+           .collection('BAC').doc()
+           .set({'Date & Time of Record': formattedDate, 'BAC Level': bac, 'Condition': drinkingstatus
+       });
     });
   }
 
@@ -420,14 +411,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => LearnListScreen()));
-              },
-            ),
-            ListTile(
-              title: new Text("Location"),
-              leading: new Icon(Icons.location_on_sharp),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LocationScreen()));
               },
             ),
             ListTile(
