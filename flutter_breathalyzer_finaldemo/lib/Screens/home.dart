@@ -16,6 +16,8 @@ import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -51,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String dataString = '';
   String warmcentreText = '';
   String blowcentreText = '';
-  String connectionstatus = '';
 
   AnimationController _animationController;
   Animation tween;
@@ -157,13 +158,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       isConnectButtonEnabled = false;
       isDisConnectButtonEnabled = true;
     });
+    Fluttertoast.showToast(
+      msg: 'Pairing',
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16,
+    );
     devices = await _bluetooth.getBondedDevices();
     // ignore: unnecessary_statements
     devices.forEach((device) {
       print(device);
       if (device.name == "HC-05") {
         mydevice = device;
-        connectionstatus = 'Connected';
+        Fluttertoast.showToast(
+          msg: 'Connected',
+          backgroundColor: Colors.lightGreenAccent,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
       }
     });
 
@@ -187,7 +199,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
     connection.close();
     connection.dispose();
-    connectionstatus = 'Disconnected';
+    Fluttertoast.showToast(
+      msg: 'Disconnected',
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16,
+    );
   }
 
   void _onDataReceived(Uint8List data) {
@@ -439,13 +456,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text('$connectionstatus', style: TextStyle(fontSize: 15,),),
-            ),
-          ),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Center(

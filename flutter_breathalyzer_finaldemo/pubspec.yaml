@@ -32,6 +32,9 @@ dependencies:
     sdk: flutter
   geocoding:
   geolocator:
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
 
 
 
@@ -47,6 +50,7 @@ dependencies:
   flutter_svg: ^0.23.0+1
   url_launcher: ^6.0.12
   liquid_progress_indicator: ^0.4.0
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:
