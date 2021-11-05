@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_breathalyzer/Components/button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Screens/profile.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -17,6 +18,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String ec = '';
   bool isloading = false;
 
+  final TextEditingController controller = TextEditingController();
+
   Future<void> updateUser() {
     return FirebaseFirestore.instance.collection('users')
         .doc(firebaseUser!.uid)
@@ -28,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: Text('Edit Emergency Contact'),
         centerTitle: true,
         leading: BackButton(),
         backgroundColor: Colors.blueAccent,
@@ -36,56 +39,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       body: isloading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+            child: CircularProgressIndicator(),)
           : Form(
         key: formkey,
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: Stack(
-            children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                color: Colors.grey[200],
-                child: SingleChildScrollView(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 30),
-                      TextFormField(
-                          decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                  Icons.phone,
-                                  color: Color(0xFF398AE5)),
-                              hintStyle: TextStyle(color: Colors.black45),
-                              errorStyle: TextStyle(color: Colors.redAccent),
-                              border: OutlineInputBorder(),
-                              labelText: 'Emergency Contact'
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.light,
+              child: Stack(
+                children: [
+                  Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    color: Colors.grey[200],
+                    child: SingleChildScrollView(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 30),
+                          InternationalPhoneNumberInput(
+                            onInputChanged: (PhoneNumber number) {
+                              //print(number.phoneNumber);
+                              setState((){ec = number.toString();});
+                            },
+                            selectorConfig: SelectorConfig(
+                              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                            ),
+                            ignoreBlank: false,
+                            autoValidateMode: AutovalidateMode.disabled,
+                            selectorTextStyle: TextStyle(color: Colors.black),
+                            initialValue: PhoneNumber(isoCode: 'SG'),
+                            textFieldController: controller,
+                            formatInput: false,
+                            keyboardType:
+                            TextInputType.numberWithOptions(signed: true, decimal: true),
+                            inputBorder: OutlineInputBorder(),
+                            onSaved: (PhoneNumber number) {
+                              print('On Saved: $number');
+                              //ed = number;
+                            },
                           ),
-                          onChanged: (value) {
-                            ec = value;
-                          }),
-                      SizedBox(height: 30),
-                      SizedBox(height: 30),
-                      LoginSignupButton(
-                        title: 'Edit',
-                        ontapp: () {
-                          updateUser();
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => ProfileScreen()));
-                        }
+                          SizedBox(height: 30),
+                          LoginSignupButton(
+                            title: 'Edit',
+                            ontapp: () {
+                              updateUser();
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+                            }
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )
-            ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 }

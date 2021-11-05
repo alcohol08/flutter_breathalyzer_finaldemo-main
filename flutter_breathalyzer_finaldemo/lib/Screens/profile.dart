@@ -138,7 +138,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               indent: 48,
               endIndent: 48
           ),
-
           const SizedBox(height: 25),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 48),
@@ -191,7 +190,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-
           Container(
             padding: EdgeInsets.symmetric(horizontal: 48),
             child: Column(
