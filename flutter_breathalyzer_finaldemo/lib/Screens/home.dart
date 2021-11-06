@@ -1,4 +1,5 @@
 //@dart=2.9
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_breathalyzer/Screens/login.dart';
@@ -16,7 +17,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   bool isConnectButtonEnabled = true;
   bool isDisConnectButtonEnabled = false;
   double bac;
+  String baclevel;
   final FirebaseAuth auth = FirebaseAuth.instance;
   String name = '';
   String ec = '';
@@ -84,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _animationController.addListener((){setState((){});});
   }
 
+
   //Firebase Cloud
   void _getdata() async {
     FirebaseFirestore.instance
@@ -100,9 +102,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void sendSms() async {
+    Position position = await _getGeoLocationPosition();
+    await GetAddressFromLatLong(position);
     twilioFlutter.sendSMS(
         toNumber: ec,
-        messageBody: 'Hi, your friend is drunk. Please come and get him at ' + Address + '.');
+        messageBody: 'Hi, ' + name + ' is drunk. Please come and get him/her at ' + Address + '.');
   }
 
   //Location
@@ -178,19 +182,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     });
 
-    await BluetoothConnection.toAddress(mydevice?.address)
-        .then((_connection) {
+    await BluetoothConnection.toAddress(mydevice?.address).then((_connection) async {
       print('Connected to the device' + mydevice.toString());
       connection = _connection;
     });
     connection.input.listen(_onDataReceived).onDone((){});
-
     connection.input.listen(null).onDone(() {
       print('Disconnected remotely!');
     });
   }
 
-  void _disconnect() {
+  void _sendMessage(String text) async {
+
+    connection.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
+    await connection.output.allSent;
+  }
+
+  Future<void> _disconnect() async {
+    await _sendMessage('0');
     setState(() {
       op = "Disconnected";
       isConnectButtonEnabled = true;
@@ -206,7 +215,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _onDataReceived(Uint8List data) {
+  Future<void> _onDataReceived(Uint8List data) async {
+    await _sendMessage('1');
     // Allocate buffer for parsed data
     int backspacesCounter = 0;
     data.forEach((byte) {
@@ -264,14 +274,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     int m = (tts - 60 * h).round();
     tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
     final conversion = bac / 0.16; // so that the indicator shows proportionate level
-    setState(() async {
       centreText = bac.toString();
       if (bac >= 0.08) {
         drinkingstatus = "Drinking status: Drunk";
         _animationController.value = conversion;
         myColor = Colors.red;
-        Position position = await _getGeoLocationPosition();
-        GetAddressFromLatLong(position);
         sendSms();
       }
       else if (bac > 0.01 && bac < 0.08) {
@@ -284,14 +291,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         _animationController.value = conversion;
         myColor = Colors.green;
       }
-      //Sync to Firebase
-      var now = new DateTime.now();
-      var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
-      final String formattedDate = formatter.format(now);
-      FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
-           .collection('BAC').doc()
-           .set({'Date & Time of Record': formattedDate, 'BAC Level': bac, 'Condition': drinkingstatus
-       });
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
+    final String formattedDate = formatter.format(now);
+    FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
+        .collection('BAC').doc()
+        .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus
     });
   }
 

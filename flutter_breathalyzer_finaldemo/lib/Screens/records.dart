@@ -16,7 +16,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('History'),
+        title: Text('Records'),
         centerTitle: true,
         backgroundColor: Color(0xFF398AE5),
       ),
@@ -44,7 +44,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             size: 40.0,
                             color: Color(0xFF398AE5),
                           ),
-                          title: Text('BAC Level: '+data['Condition'],
+                          title: Text(data['Condition'] +'                      BAC Level: '+data['BAC Level'],
                               style:TextStyle(
                                   height:2,
                                   color: Colors.black,
