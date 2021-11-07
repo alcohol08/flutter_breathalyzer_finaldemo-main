@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String op = '';
   bool isConnectButtonEnabled = true;
   bool isDisConnectButtonEnabled = false;
+  bool showResults=false;
   double bac;
   String baclevel;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String ec = '';
   String fp = '';
   double tts;
+  int store;
   String centreText = 'Welcome Back';
   String tts1 = 'How long does it take to reach sobriety?';
   TwilioFlutter twilioFlutter;
@@ -264,33 +266,36 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
+    decoder();
   }
 
   void results() {
     //Processing BAC
-    bac = double.parse(op);
-    tts = bac * 3750;
-    int h = tts ~/ 60;
-    int m = (tts - 60 * h).round();
-    tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
-    final conversion = bac / 0.16; // so that the indicator shows proportionate level
-      centreText = bac.toString();
-      if (bac >= 0.08) {
-        drinkingstatus = "Drinking status: Drunk";
-        _animationController.value = conversion;
-        myColor = Colors.red;
-        sendSms();
-      }
-      else if (bac > 0.01 && bac < 0.08) {
-        drinkingstatus = "Drinking status: Within limit";
-        _animationController.value = conversion;
-        myColor = Colors.amber;
-      }
-      else {
-        drinkingstatus = "Drinking status: Sober";
-        _animationController.value = conversion;
-        myColor = Colors.green;
-      }
+    setState(() {
+      bac = double.parse(op);
+      tts = bac * 3750;
+      int h = tts ~/ 60;
+      int m = (tts - 60 * h).round();
+      tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
+      final conversion = bac / 0.16; // so that the indicator shows proportionate level
+        centreText = bac.toString();
+        if (bac >= 0.08) {
+          drinkingstatus = "Drinking status: Drunk";
+          _animationController.value = conversion;
+          myColor = Colors.red;
+          sendSms();
+        }
+        else if (bac > 0.01 && bac < 0.08) {
+          drinkingstatus = "Drinking status: Within limit";
+          _animationController.value = conversion;
+          myColor = Colors.amber;
+        }
+        else {
+          drinkingstatus = "Drinking status: Sober";
+          _animationController.value = conversion;
+          myColor = Colors.green;
+        }
+    });
     var now = new DateTime.now();
     var formatter = new DateFormat('dd-MM-yyyy – HH:mm');
     final String formattedDate = formatter.format(now);
@@ -298,18 +303,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         .collection('BAC').doc()
         .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus
     });
-  }
+    store=0;
+    }
 
-
-  @override
-  Widget build(BuildContext context) {
-    //Decode data from Bluetooth to op variable
+  //Decode data from Bluetooth to op variable
+  void decoder() {
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
           Text((text) {
-                return text == '/shrug' ? '¯\\_(ツ)_/¯' : op = text;//
-              }(_message.text.trim()),),
+            return text == '/shrug' ? '¯\\_(ツ)_/¯' : op = text; //
+          }(_message.text.trim()),),
         ],
       );
     }).toList();
@@ -321,37 +325,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       print(matchedText); // print the integer only without s
       var warmcountdown = int.parse(matchedText);
       print(warmcountdown);
-      warmcentreText = ('Warming up '+ '$matchedText');
+      warmcentreText = ('Warming up ' + '$matchedText');
       centreText = warmcentreText;
       myColor = Colors.blue;
       _animationController.animateTo(1);
       _animationController.duration = Duration(seconds: 6);
-      if (warmcountdown == 0){
+      if (warmcountdown == 0) {
         _animationController.value = 0;
       }
-      if (warmcountdown == 20){
+      if (warmcountdown == 20) {
         drinkingstatus = '';
         tts1 = '';
       }
     }
     else if (re_bac.hasMatch(op) == true) {
-      results();
+      if(store==1) {
+        results();
+      }
     }
-    else if (checksec2.hasMatch(op) == true){ //detect ss from '10 ss'
+    else if (checksec2.hasMatch(op) == true) { //detect ss from '10 ss'
       matches2 = exp.allMatches(op);
       matchedText2 = matches2.elementAt(0).group(0); //parse the '10' from '10s'
       print(matchedText2); // print the integer only without s
       var blowountdown = int.parse(matchedText2);
-      blowcentreText = ('Blow for '+ '$matchedText2');
+      blowcentreText = ('Blow for ' + '$matchedText2');
       centreText = blowcentreText;
       myColor = Colors.blue;
       _animationController.animateTo(1);
       _animationController.duration = Duration(seconds: 3);
-      if (blowountdown == 0){
+      if (blowountdown == 0) {
         _animationController.value = 0;
+        store=1;
       }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Help'),

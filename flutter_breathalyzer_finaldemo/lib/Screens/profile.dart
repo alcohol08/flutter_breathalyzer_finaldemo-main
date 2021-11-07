@@ -61,16 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
+        title: Text('Records'),
         centerTitle: true,
-        leading: BackButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
-            }
-        ),
-        backgroundColor: Colors.blueAccent,
-        elevation: 0,
+        backgroundColor: Color(0xFF398AE5),
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
