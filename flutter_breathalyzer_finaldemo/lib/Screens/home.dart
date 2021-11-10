@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           myColor = Colors.amber;
         }
         else {
-          drinkingstatus = "Drinking status: Sober";
+          drinkingstatus = "Drinking Status: Sober";
           _animationController.value = conversion;
           myColor = Colors.green;
         }
