@@ -17,6 +17,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_breathalyzer/Screens/notificationscreen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -331,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       centreText = warmcentreText;
       myColor = Colors.blue;
       _animationController.animateTo(1);
-      _animationController.duration = Duration(seconds: 6);
+      _animationController.duration = Duration(seconds: 20);
       if (warmcountdown == 0) {
         _animationController.value = 0;
       }
@@ -352,7 +353,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       centreText = blowcentreText;
       myColor = Colors.blue;
       _animationController.animateTo(1);
-      _animationController.duration = Duration(seconds: 3);
+      _animationController.duration = Duration(seconds: 10);
       if (blowountdown == 0) {
         _animationController.value = 0;
       }
@@ -416,8 +417,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               },
             ),
             ListTile(
+              title: new Text("Notifications"),
+              leading: new Icon(Icons.notifications),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => NotificationScreen()));
+              },
+            ),
+            ListTile(
               title: new Text("Learn"),
-              leading: new Icon(Icons.account_circle_rounded),
+              leading: new Icon(Icons.flutter_dash),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => LearnListScreen()));

@@ -37,6 +37,13 @@ dependencies:
   intl: ^0.17.0
   introduction_screen: ^2.1.0
   intl_phone_number_input: ^0.7.0+2
+  flutter_local_notifications: ^9.0.3
+  timezone: ^0.8.0
+  flutter_datetime_picker:
+    git:
+      url: https://github.com/Realank/flutter_datetime_picker.git
+      ref: master
+  flutter_native_timezone: ^2.0.0
 
 
 
@@ -53,6 +60,7 @@ dependencies:
   url_launcher: ^6.0.12
   liquid_progress_indicator: ^0.4.0
   fluttertoast: ^8.0.8
+
 
 dev_dependencies:
   flutter_test:

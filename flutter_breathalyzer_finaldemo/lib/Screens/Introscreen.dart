@@ -38,16 +38,6 @@ class _IntroScreenState extends State<IntroScreen> {
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Colors.white,
-      globalHeader: Align(
-        alignment: Alignment.topRight,
-        child: ElevatedButton(
-          child: const Text(
-            'x',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () => _onIntroEnd(context),
-        ),
-      ),
       pages: [
         PageViewModel(
           title: "Welcome to Drinké",
