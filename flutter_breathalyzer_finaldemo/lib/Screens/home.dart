@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String ec = '';
   String fp = '';
   double tts;
-  int store;
+  int color;
   String centreText = 'Welcome Back';
   String tts1 = 'Time to Sobriety: ';
   TwilioFlutter twilioFlutter;
@@ -75,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     twilioFlutter = TwilioFlutter(
-        accountSid: 'AC8e93842b5d219b06e3f3d8858ef27649',
-        authToken: '74585ae96f011bbfed4e87b4981b3e9e',
-        twilioNumber: '+13349663018');
+        accountSid: 'AC79f7f49196517b59ef413880aeaf95e3',
+        authToken: 'a3d5455ee588ee2a36a82275f163ce7d',
+        twilioNumber: '+14092078011');
     super.initState();
     _getdata();
     _animationController = AnimationController(
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     await GetAddressFromLatLong(position);
     twilioFlutter.sendSMS(
         toNumber: ec,
-        messageBody: 'Hi, ' + name + ' is drunk. Please come and get ' + name+ ' at '  + Address + '.');
+        messageBody: 'Hi, ' + name + ' is drunk. Please come and get ' + name + ' at '  + Address + '.');
   }
 
   //Location
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
-    decoder();
+    //decoder();
   }
 
   void results() {
@@ -283,17 +283,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           drinkingstatus = "Drinking status: Drunk";
           _animationController.value = conversion;
           myColor = Colors.red;
+          color=myColor.value;
           sendSms();
         }
         else if (bac > 0.01 && bac < 0.08) {
           drinkingstatus = "Drinking status: Within limit";
           _animationController.value = conversion;
           myColor = Colors.amber;
+          color=myColor.value;
         }
         else {
           drinkingstatus = "Drinking Status: Sober";
           _animationController.value = conversion;
           myColor = Colors.green;
+          color=myColor.value;
         }
     });
     var now = new DateTime.now();
@@ -301,13 +304,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final String formattedDate = formatter.format(now);
     FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
         .collection('BAC').doc()
-        .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus, 'Color': myColor
+        .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus, 'Color': color
     });
-    store=0;
     }
 
-  //Decode data from Bluetooth to op variable
-  void decoder() {
+
+  @override
+  Widget build(BuildContext context) {
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -318,7 +321,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
     }).toList();
 
-    //Checking signal from Arduino
     if (checksec.hasMatch(op) == true) { //detect s from '20 s' data
       matches = exp.allMatches(op);
       matchedText = matches.elementAt(0).group(0); //parse the '10' from '10s'
@@ -339,9 +341,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     }
     else if (re_bac.hasMatch(op) == true) {
-      if(store==1) {
-        results();
-      }
+      results();
     }
     else if (checksec2.hasMatch(op) == true) { //detect ss from '10 ss'
       matches2 = exp.allMatches(op);
@@ -355,13 +355,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       _animationController.duration = Duration(seconds: 3);
       if (blowountdown == 0) {
         _animationController.value = 0;
-        store=1;
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Help'),

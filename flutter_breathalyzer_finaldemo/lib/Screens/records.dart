@@ -44,7 +44,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           leading: Icon(
                             Icons.liquor,
                             size: 40.0,
-                            color: data['Color'],
+                            color: new Color(data['Color']),
                           ),
                           title: Text(data['Condition'] +'\nBAC Level: '+data['BAC Level'],
                               style:TextStyle(
