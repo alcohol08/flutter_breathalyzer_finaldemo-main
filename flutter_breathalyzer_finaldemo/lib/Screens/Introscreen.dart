@@ -96,7 +96,7 @@ class _IntroScreenState extends State<IntroScreen> {
         PageViewModel(
           title: "Easily Access to All Your Data in Cloud Encrypted Storage",
           body:
-          "Drinké cares about your privacy, only you can access to your own BAC history measurements, with date and location. "
+          "Drinké cares about your privacy, only you can access to your own BAC history measurements, with date. "
               "With this you can better track your alcohol drinking habits, or consult your physician.",
           decoration: pageDecoration.copyWith(
             bodyFlex:2,

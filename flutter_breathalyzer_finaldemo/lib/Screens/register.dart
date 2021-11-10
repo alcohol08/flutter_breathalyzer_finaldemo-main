@@ -172,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             dropdownValue = value!;
                           });
                         },
-                        items: <String>['Enter your gender','Male','Female']
+                        items: <String>['Enter your gender','Male','Female','Others','Prefer not to say']
                             .map<DropdownMenuItem<String>>((String value){
                           return DropdownMenuItem<String>(
                             value: value,

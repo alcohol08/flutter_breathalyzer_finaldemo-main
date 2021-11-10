@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   double tts;
   int store;
   String centreText = 'Welcome Back';
-  String tts1 = 'How long does it take to reach sobriety?';
+  String tts1 = 'Time to Sobriety: ';
   TwilioFlutter twilioFlutter;
   String Address = '';
   String _messageBuffer = '';
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   AnimationController _animationController;
   Animation tween;
   Color myColor = Colors.blue;
-  String drinkingstatus = 'What is my drinking status?';
+  String drinkingstatus = 'Drinking Status: ';
 
   List<_Message> messages = List<_Message>.empty(growable: true);
 
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     await GetAddressFromLatLong(position);
     twilioFlutter.sendSMS(
         toNumber: ec,
-        messageBody: 'Hi, ' + name + ' is drunk. Please come and get him/her at ' + Address + '.');
+        messageBody: 'Hi, ' + name + ' is drunk. Please come and get ' + name+ ' at '  + Address + '.');
   }
 
   //Location
@@ -301,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final String formattedDate = formatter.format(now);
     FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid)
         .collection('BAC').doc()
-        .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus
+        .set({'Date & Time of Record': formattedDate, 'BAC Level': centreText, 'Condition': drinkingstatus, 'Color': myColor
     });
     store=0;
     }
@@ -528,8 +528,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 fontWeight: FontWeight.bold,),),
             ),
           ),
+
           Container(
-            margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text('$tts1', style: TextStyle(fontSize: 20,

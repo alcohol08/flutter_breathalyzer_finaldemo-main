@@ -12,6 +12,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
   final firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,12 +41,12 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 return Card(
                     child: SingleChildScrollView(
                         child: ListTile(
-                          leading: const Icon(
+                          leading: Icon(
                             Icons.liquor,
                             size: 40.0,
-                            color: Color(0xFF398AE5),
+                            color: data['Color'],
                           ),
-                          title: Text(data['Condition'] +'                      BAC Level: '+data['BAC Level'],
+                          title: Text(data['Condition'] +'\nBAC Level: '+data['BAC Level'],
                               style:TextStyle(
                                   height:2,
                                   color: Colors.black,
@@ -53,7 +55,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           ),
                           subtitle:  Text('Time of Record: '+data['Date & Time of Record'] ,
                               style:TextStyle(
-                                  height:2,
+                                  height:3,
                                   fontSize:15)
                           ),
                         )

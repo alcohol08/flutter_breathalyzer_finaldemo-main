@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return "Please enter Email";
+                                    return "Please Enter Email";
                                   }
                                 },
 
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   obscureText: true,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return "Please enter Password";
+                                      return "Please Enter Password";
                                     }
                                   },
                                   onChanged: (value) {
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Hero(
                                     tag: '1',
                                     child: Text(
-                                      'Sign up',
+                                      'Sign Up',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: 'Open Sans',
