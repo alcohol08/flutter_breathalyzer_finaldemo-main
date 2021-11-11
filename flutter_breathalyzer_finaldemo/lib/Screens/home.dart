@@ -279,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       int m = (tts - 60 * h).round();
       tts1 = 'Time to sobriety: ' + h.toString() + ' h ' + m.toString() + ' m';
       final conversion = bac / 0.16; // so that the indicator shows proportionate level
-        centreText = bac.toString();
+        centreText = bac.toString()+"%";
         if (bac >= 0.08) {
           drinkingstatus = "Drinking status: Drunk";
           _animationController.value = conversion;
