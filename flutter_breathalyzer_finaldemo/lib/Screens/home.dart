@@ -267,7 +267,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
-    //decoder();
   }
 
   void results() {
@@ -309,7 +308,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
     }
 
-
   @override
   Widget build(BuildContext context) {
     final List<Row> list = messages.map((_message) {
@@ -325,14 +323,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     if (checksec.hasMatch(op) == true) { //detect s from '20 s' data
       matches = exp.allMatches(op);
       matchedText = matches.elementAt(0).group(0); //parse the '10' from '10s'
-      print(matchedText); // print the integer only without s
       var warmcountdown = int.parse(matchedText);
-      print(warmcountdown);
       warmcentreText = ('Warming up ' + '$matchedText');
       centreText = warmcentreText;
       myColor = Colors.blue;
       _animationController.animateTo(1);
-      _animationController.duration = Duration(seconds: 20);
+      _animationController.duration = Duration(seconds: 15);
       if (warmcountdown == 0) {
         _animationController.value = 0;
       }
@@ -347,7 +343,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     else if (checksec2.hasMatch(op) == true) { //detect ss from '10 ss'
       matches2 = exp.allMatches(op);
       matchedText2 = matches2.elementAt(0).group(0); //parse the '10' from '10s'
-      print(matchedText2); // print the integer only without s
       var blowountdown = int.parse(matchedText2);
       blowcentreText = ('Blow for ' + '$matchedText2');
       centreText = blowcentreText;
@@ -532,7 +527,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 fontWeight: FontWeight.bold,),),
             ),
           ),
-
           Container(
             margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
             child: Align(
