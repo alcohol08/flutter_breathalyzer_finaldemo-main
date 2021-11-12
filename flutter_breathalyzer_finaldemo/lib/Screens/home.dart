@@ -286,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           color=myColor.value;
           sendSms();
         }
-        else if (bac > 0.01 && bac < 0.08) {
+        else if (bac > 0.00 && bac < 0.08) {
           drinkingstatus = "Drinking status: Within limit";
           _animationController.value = conversion;
           myColor = Colors.amber;
