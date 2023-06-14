@@ -76,9 +76,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     twilioFlutter = TwilioFlutter(
-        accountSid: 'AC79f7f49196517b59ef413880aeaf95e3',
-        authToken: 'a3d5455ee588ee2a36a82275f163ce7d',
-        twilioNumber: '+14092078011');
+        accountSid: 'xxxxxxxxxxxx',
+        authToken: 'xxxxxxxxxxxx',
+        twilioNumber: 'xxxxxxxxxxxx');
     super.initState();
     _getdata();
     _animationController = AnimationController(
